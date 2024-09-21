@@ -1,0 +1,4 @@
+selenium == 4.25.0 
+beautifulsoup4 == 4.12.3 
+regex  == 2024.9.11 
+pandas == 2.2.3 
