@@ -1,10 +1,12 @@
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.service import Service
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import os
 import csv
 from argparse import ArgumentParser
@@ -48,15 +50,9 @@ if __name__ == "__main__":
 
 # chrome_service = Service('/bin/chromedriver')  # Path to ChromeDriver
 # driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-
-chrome_options = Options()
-chrome_options.add_argument("--headless")  # Run in headless mode
-chrome_options.add_argument("--no-sandbox")  # Required for Docker
-chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
-chrome_options.binary_location = "/usr/bin/google-chrome-stable"  # Ensure this is the correct path
-
-chrome_service = Service("/usr/local/bin/chromedriver")
-
+chrome_options = webdriver.ChromeOptions()
+chrome_service = Service("/bin/chromedriver")
+chrome_options.add_argument("--disable-notifications")
 # Initialize the driver with timeout values
 driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 driver.set_page_load_timeout(30)  # Set page load timeout in seconds
@@ -77,6 +73,14 @@ driver.find_element(By.XPATH, '//*[@id="email"]').send_keys(args.username)
 driver.find_element(By.XPATH, '//*[@id="pass"]').send_keys(args.password)
 driver.find_element(By.XPATH, '//*[@id="loginbutton"]').click()
 time.sleep(3)
+# Handle Notifications
+# try:
+#     allow_button = WebDriverWait(driver, 10).until(
+#         EC.element_to_be_clickable((By.XPATH, '//*[text()="Allow"]'))
+#     )
+#     allow_button.click()
+# except Exception as e:
+#     print("No notification block appeared or an error occurred:", e)
 
 # Navigate to the specified page or profile link
 driver.get(args.link)
