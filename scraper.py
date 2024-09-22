@@ -53,6 +53,8 @@ if __name__ == "__main__":
 chrome_options = webdriver.ChromeOptions()
 chrome_service = Service("/bin/chromedriver")
 chrome_options.add_argument("--disable-notifications")
+chrome_options.binary_location = "/usr/bin/google-chrome-stable" 
+chrome_service = Service("/usr/local/bin/chromedriver")
 # Initialize the driver with timeout values
 driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 driver.set_page_load_timeout(30)  # Set page load timeout in seconds
