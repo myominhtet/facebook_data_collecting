@@ -40,20 +40,17 @@ if __name__ == "__main__":
     print("Page:", args.page)
     print("Profile:", args.profile)
 
-# Chrome WebDriver Setup
-# chrome_options = Options()
-# chrome_options.add_argument("--incognito")
-# chrome_options.add_argument("--window-size=1920x1080")
-# from selenium.webdriver.chrome.service import Service
 
-# chrome_service = Service('/bin/chromedriver')  # Path to ChromeDriver
-# driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-
-chrome_options = webdriver.ChromeOptions()
+chrome_options = Options()
+chrome_options.add_argument("--headless")  # Run in headless mode
+chrome_options.add_argument("--no-sandbox")  # Required for Docker
+# chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+chrome_options.add_argument("--disable-notifications")
 chrome_options.binary_location = "/usr/bin/google-chrome-stable"  # Ensure this is the correct path
+
 chrome_service = Service("/usr/local/bin/chromedriver")
+
 # Initialize the driver with timeout values
-driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 driver.set_page_load_timeout(30)  # Set page load timeout in seconds
 driver.implicitly_wait(10)  # Implicitly wait for elements to be found
