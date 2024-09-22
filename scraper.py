@@ -49,16 +49,11 @@ if __name__ == "__main__":
 # chrome_service = Service('/bin/chromedriver')  # Path to ChromeDriver
 # driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
-chrome_options = Options()
-chrome_options.add_argument("--headless")  # Run in headless mode
-chrome_options.add_argument("--no-sandbox")  # Required for Docker
-chrome_options.add_argument("--disable-notifications")
-chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = "/usr/bin/google-chrome-stable"  # Ensure this is the correct path
-
 chrome_service = Service("/usr/local/bin/chromedriver")
-
 # Initialize the driver with timeout values
+driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 driver.set_page_load_timeout(30)  # Set page load timeout in seconds
 driver.implicitly_wait(10)  # Implicitly wait for elements to be found
