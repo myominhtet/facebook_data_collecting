@@ -53,6 +53,7 @@ if __name__ == "__main__":
 chrome_options = webdriver.ChromeOptions()
 chrome_service = Service("/usr/local/bin/chromedriver")
 chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-notifications")
 chrome_options.add_argument("--disable-notifications")
 chrome_options.binary_location = "/usr/bin/google-chrome-stable" 
