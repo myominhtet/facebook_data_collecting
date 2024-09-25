@@ -48,7 +48,7 @@ def extract_new_posts():
     new_data = []  
     
     # Scroll multiple times to load more posts
-    for _ in range(5):  # Adjust the number of scrolls based on how many posts you want to load
+    for _ in range(1):  # Adjust the number of scrolls based on how many posts you want to load
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(3)
 
