@@ -8,7 +8,7 @@ print("Test Execution Started")
 options = webdriver.ChromeOptions()
 options = webdriver.ChromeOptions()
 options.add_argument("--disable-notifications")
-# options.add_argument("--headless")  # Enable headless mode for Docker
+options.add_argument("--headless")  # Enable headless mode for Docker
 options.add_argument("--disable-gpu")
 options.add_argument("--no-sandbox")
 options.add_argument("--window-size=1920,1080")
