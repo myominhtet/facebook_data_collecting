@@ -1,8 +1,5 @@
-# Use an Ubuntu base image
-FROM ubuntu:20.04
-
-# Set non-interactive mode for apt
-ENV DEBIAN_FRONTEND=noninteractive
+# Base image: Python with necessary dependencies
+FROM python:3.9-slim
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
