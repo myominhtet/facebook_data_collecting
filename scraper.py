@@ -1,81 +1,44 @@
-
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 import time
-from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import os
+from bs4 import BeautifulSoup
 import csv
-from argparse import ArgumentParser
-import re
+from selenium.webdriver.common.by import By
+print("Test Execution Started")
+options = webdriver.ChromeOptions()
+options = webdriver.ChromeOptions()
+options.add_argument("--disable-notifications")
+# options.add_argument("--headless")  # Enable headless mode for Docker
+options.add_argument("--disable-gpu")
+options.add_argument("--no-sandbox")
+options.add_argument("--window-size=1920,1080")
+options.add_argument("--remote-debugging-port=9222")  # Add this line
+options.add_argument('--disable-dev-shm-usage')
+driver = webdriver.Remote(
+    command_executor='http://localhost:4444',  # Remove /wd/hub
+    options=options
+)
 
-parser = ArgumentParser()
-
-def is_valid_url(url):
-    # Regular expression to validate URLs
-    url_regex = r"^(http|https)://[^\s/$.?#].[^\s]*$"
-    return re.match(url_regex, url) is not None
-
-if __name__ == "__main__":
-    parser.add_argument("--username", type=str, help="Username for authentication")
-    parser.add_argument("--password", type=str, help="Password for authentication")
-    parser.add_argument("--link", type=str, help="Link to the page or profile")
-    
-    parser.add_argument("--page", action="store_true", help="Scrape as a page")
-    parser.add_argument("--profile", action="store_true", help="Scrape as a profile")
-    
-    args = parser.parse_args()
-
-    if not any([args.page, args.profile]):
-        parser.error("Please specify --page or --profile")
-
-    if not is_valid_url(args.link):
-        parser.error("Invalid link format. Please provide a valid URL.")
-
-    # Your scraping logic goes here
-    print("Username:", args.username)
-    print("Password:", args.password)
-    print("Link:", args.link)
-    print("Page:", args.page)
-    print("Profile:", args.profile)
-
-chrome_options = webdriver.ChromeOptions()
-chrome_service = Service("usr/local/bin/chromedriver")
-chrome_options.add_argument("--incognito")
-chrome_options.add_argument("--disable-notifications")
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-gpu")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("window-size=1920,1080")
-
-# Initialize the driver with timeout values
-driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-driver.set_page_load_timeout(30)  # Set page load timeout in seconds
-driver.implicitly_wait(10)  # Implicitly wait for elements to be found
-
-# Facebook Login
+#maximize the window size
+driver.maximize_window()
+time.sleep(10)
 driver.get('https://www.facebook.com/login/')
 
-time.sleep(1)
+
+# # Login to Facebook
+driver.find_element(By.XPATH, '//*[@id="email"]').send_keys("+959795991873")
+driver.find_element(By.XPATH, '//*[@id="pass"]').send_keys("12345ys")
+driver.find_element(By.XPATH, '//*[@id="loginbutton"]').click()
+time.sleep(3)
+driver.get("https://www.facebook.com/VOABurmese/")
+time.sleep(3)
+print("finished")
 
 # Create directory for saving data
 dir = './scraped_data/'
 if not os.path.exists(dir):
     os.makedirs(dir)
 
-# Login to Facebook
-driver.find_element(By.XPATH, '//*[@id="email"]').send_keys(args.username)
-driver.find_element(By.XPATH, '//*[@id="pass"]').send_keys(args.password)
-driver.find_element(By.XPATH, '//*[@id="loginbutton"]').click()
-time.sleep(3)
-
-driver.get(args.link)
-time.sleep(3)
-
-# Text scraping for Facebook Page
 data = []
 total_text_saved = 0
 
@@ -119,9 +82,6 @@ def extract_new_posts():
             print(f"An error occurred while processing the post: {e}")
 
     return new_data  # Return new posts found
-
-
-
 
 # Main loop for real-time monitoring
 while True:
