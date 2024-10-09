@@ -4,12 +4,17 @@ FROM ubuntu:20.04
 # Disable interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update the repository and install basic dependencies in small batches
+# Update and upgrade the system
+RUN apt-get update && apt-get -y upgrade
+
+# Install basic utilities first
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
-    unzip \
-    && apt-get install -y \
+    unzip
+
+# Install libraries and dependencies
+RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     libnss3 \
     libgconf-2-4 \
@@ -23,9 +28,16 @@ RUN apt-get update && apt-get install -y \
     libxtst6 \
     fonts-liberation \
     libappindicator1 \
-    xdg-utils \
-    && apt-get install -y chromium-driver python3 python3-pip \
-    && rm -rf /var/lib/apt/lists/*
+    xdg-utils
+
+# Install Chromium driver separately to catch errors
+RUN apt-get update && apt-get install -y chromium-driver
+
+# Install Python 3 and pip separately
+RUN apt-get update && apt-get install -y python3 python3-pip
+
+# Clean up apt lists to save space
+RUN rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies from requirements.txt
 COPY requirements.txt /app/requirements.txt
