@@ -8,7 +8,7 @@ print("Test Execution Started")
 options = webdriver.ChromeOptions()
 options = webdriver.ChromeOptions()
 options.add_argument("--disable-notifications")
-options.add_argument("--headless")  # Enable headless mode for Docker
+# options.add_argument("--headless")  # Enable headless mode for Docker
 options.add_argument("--disable-gpu")
 options.add_argument("--no-sandbox")
 options.add_argument("--window-size=1920,1080")
@@ -30,7 +30,7 @@ driver.find_element(By.XPATH, '//*[@id="email"]').send_keys("+959795991873")
 driver.find_element(By.XPATH, '//*[@id="pass"]').send_keys("12345ys")
 driver.find_element(By.XPATH, '//*[@id="loginbutton"]').click()
 time.sleep(3)
-driver.get("https://www.facebook.com/VOABurmese/")
+driver.get("https://www.facebook.com/MyTechMyanmar")
 time.sleep(3)
 print("finished")
 
@@ -88,11 +88,11 @@ while True:
     new_data = extract_new_posts()
 
     # Append the raw data to the CSV file without overwriting previous entries
-    with open(dir + 'voaburmese.csv', 'a', newline='', encoding='utf-8') as F:
+    with open(dir + 'MyTech.csv', 'a', newline='', encoding='utf-8') as F:
         writer = csv.writer(F)
 
         # Write the header only if the file is empty or being created
-        if os.stat(dir + 'voaburmese.csv').st_size == 0:
+        if os.stat(dir + 'MyTech.csv').st_size == 0:
             writer.writerow(['text'])
 
         # Write new data if there is any
@@ -103,4 +103,3 @@ while True:
     print("Use Ctrl+C to stop the program")
     
     time.sleep(10)
-
