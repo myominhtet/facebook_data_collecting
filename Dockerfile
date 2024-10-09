@@ -1,7 +1,10 @@
-# Base image: Python with necessary dependencies
-FROM python:3.9-slim
+# Use the base image of your choice (e.g., Ubuntu or Debian)
+FROM ubuntu:20.04
 
-# Install necessary packages
+# Disable interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install necessary packages, including Python and pip
 RUN apt-get update && apt-get install -y \
     wget \
     unzip \
@@ -20,11 +23,14 @@ RUN apt-get update && apt-get install -y \
     fonts-liberation \
     libappindicator1 \
     xdg-utils \
-    chromium-driver
+    chromium-driver \
+    python3 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Install Python dependencies from requirements.txt
 COPY requirements.txt /app/requirements.txt
-RUN pip install --upgrade pip && pip install -r /app/requirements.txt
+RUN pip3 install --upgrade pip && pip3 install -r /app/requirements.txt
 
 # Create the scraped_data directory in the container
 RUN mkdir -p /app/scraped_data
@@ -36,4 +42,4 @@ COPY scraper.py /app/scraper.py
 WORKDIR /app
 
 # Default command to run your script
-CMD ["python", "scraper.py"]
+CMD ["python3", "scraper.py"]
